@@ -7,6 +7,8 @@ const App = () => {
 		lastName: "",
 		email: "",
 	})
+	const [submitted, setSubmitted] = useState(false)
+	const [valid, setValid] = useState(false)
 
 	const handleFirstNameInputChange = event => {
 		setValue({ ...value, firstName: event.target.value })
@@ -18,9 +20,25 @@ const App = () => {
 		setValue({ ...value, email: event.target.value })
 	}
 
+	const handleSubmit = event => {
+		event.preventDefault()
+		if (value.firstName && value.lastName && value.email) {
+			setValid(true)
+		}
+		setSubmitted(true)
+	}
+
 	return (
 		<div class="form-container">
-			<form class="register-form">
+			<form class="register-form" onSubmit={handleSubmit}>
+				{/* next line to show the success message */}
+				{submitted && valid ? (
+					<div class="success-message">
+						Success! Thank you {value.firstName} {value.lastName} for
+						registering
+					</div>
+				) : null}
+
 				<input
 					value={value.firstName}
 					onChange={handleFirstNameInputChange}
@@ -30,6 +48,10 @@ const App = () => {
 					placeholder="First Name"
 					name="firstName"
 				/>
+				{/* next line to show the error message */}
+				{submitted && !value.firstName ? (
+					<span id="first-name-error">Please enter a first name</span>
+				) : null}
 
 				<input
 					value={value.lastName}
@@ -40,7 +62,10 @@ const App = () => {
 					placeholder="Last Name"
 					name="lastName"
 				/>
-
+				{/* next line to show the error message */}
+				{submitted && !value.lastName ? (
+					<span id="last-name-error">Please enter a last name</span>
+				) : null}
 				<input
 					value={value.email}
 					onChange={handleEmailNameInputChange}
@@ -50,7 +75,10 @@ const App = () => {
 					placeholder="Email"
 					name="email"
 				/>
-
+				{/* next line to show the error message */}
+				{submitted && !value.email ? (
+					<span id="email-error">Please enter an email address</span>
+				) : null}
 				<button class="form-field" type="submit">
 					Register
 				</button>
